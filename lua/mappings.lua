@@ -18,3 +18,7 @@ vim.keymap.del({ "n", "t" }, "<A-i>")
 vim.keymap.set({ "n", "t" }, "<C-\\>", function()
   require("nvchad.term").toggle { pos = "float", id = "floatTerm" }
 end, { desc = "terminal toggle floating term" })
+
+vim.keymap.set({ "n", "t" }, "<leader>gg", function()
+  require("nvchad.term").toggle { cmd = "exec lazygit", pos = "float", id = "floatTerm" }
+end, { desc = "terminal toggle lazygit" })
