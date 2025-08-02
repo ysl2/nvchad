@@ -13,3 +13,8 @@ vim.keymap.del("n", "<C-n>")
 vim.keymap.set("n", "<leader>e", function()
   require("nvim-tree.api").tree.toggle()
 end, { desc = "nvimtree focus window" })
+
+vim.keymap.del({ "n", "t" }, "<A-i>")
+vim.keymap.set({ "n", "t" }, "<C-\\>", function()
+  require("nvchad.term").toggle { pos = "float", id = "floatTerm" }
+end, { desc = "terminal toggle floating term" })
