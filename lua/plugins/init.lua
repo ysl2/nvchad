@@ -37,7 +37,6 @@ return {
 
         api.config.mappings.default_on_attach(bufnr)
 
-
         vim.keymap.set("n", "l", api.node.open.edit, opts "Open")
         vim.keymap.set("n", "h", api.node.navigate.parent_close, opts "Close Directory")
         vim.keymap.del("n", "H", { buffer = bufnr })
@@ -101,6 +100,17 @@ return {
             persistence.stop()
           end
         end,
+      })
+    end,
+  },
+  {
+    "csexton/trailertrash.vim",
+    custom = true,
+    event = "VeryLazy",
+    config = function()
+      vim.cmd "hi link UnwantedTrailerTrash NONE"
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        command = "TrailerTrim",
       })
     end,
   },
