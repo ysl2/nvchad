@@ -8,3 +8,8 @@ require "nvchad.mappings"
 -- map("i", "jk", "<ESC>")
 
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
+
+vim.keymap.del("n", "<C-n>")
+vim.keymap.set("n", "<leader>e", function()
+  require("nvim-tree.api").tree.toggle()
+end, { desc = "nvimtree focus window" })

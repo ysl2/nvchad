@@ -25,4 +25,48 @@ return {
   -- 		},
   -- 	},
   -- },
+  {
+    "nvim-tree/nvim-tree.lua",
+    opts = {
+      on_attach = function(bufnr)
+        local api = require "nvim-tree.api"
+
+        local function opts(desc)
+          return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+        end
+
+        api.config.mappings.default_on_attach(bufnr)
+
+
+        vim.keymap.set("n", "l", api.node.open.edit, opts "Open")
+        vim.keymap.set("n", "h", api.node.navigate.parent_close, opts "Close Directory")
+        vim.keymap.del("n", "H", { buffer = bufnr })
+        vim.keymap.set("n", "I", api.tree.toggle_hidden_filter, opts "Toggle Dotfiles")
+        vim.keymap.set("n", "z", api.tree.collapse_all, opts "Collapse")
+        vim.keymap.set("n", "Z", api.tree.expand_all, opts "Expand All")
+        vim.keymap.set("n", "s", api.node.open.horizontal, opts "Open: Horizontal Split")
+        vim.keymap.del("n", "<C-v>", { buffer = bufnr })
+        vim.keymap.set("n", "v", api.node.open.vertical, opts "Open: Vertical Split")
+
+        vim.keymap.set("n", "t", function()
+          local node = api.tree.get_node_under_cursor()
+          api.node.open.tab(node)
+          vim.cmd.tabprev()
+        end, opts "open_tab_silent")
+
+        vim.keymap.set("n", "T", function()
+          local node = api.tree.get_node_under_cursor()
+          vim.cmd "quit"
+          api.node.open.tab(node)
+        end, opts "open_tab_and_close_tree")
+
+        vim.keymap.set("n", "<C-t>", function()
+          local node = api.tree.get_node_under_cursor()
+          vim.cmd "wincmd l"
+          api.node.open.tab(node)
+        end, opts "open_tab_and_swap_cursor")
+      end,
+      filters = { custom = { "^.git$" } },
+    },
+  },
 }
