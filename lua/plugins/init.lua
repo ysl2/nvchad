@@ -85,4 +85,23 @@ return {
       }
     end,
   },
+  {
+    "folke/persistence.nvim",
+    custom = true,
+    lazy = false,
+    opts = function()
+      -- Auto restore session
+      vim.api.nvim_create_autocmd("VimEnter", {
+        nested = true,
+        callback = function()
+          local persistence = require "persistence"
+          if vim.fn.argc() == 0 and not vim.g.started_with_stdin then
+            persistence.load()
+          else
+            persistence.stop()
+          end
+        end,
+      })
+    end,
+  },
 }

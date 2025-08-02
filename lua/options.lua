@@ -8,3 +8,4 @@ require "nvchad.options"
 vim.opt.clipboard = ""
 vim.opt.relativenumber = true
 vim.opt.wrap = false
+vim.opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp", "folds" }
