@@ -3,12 +3,14 @@ return {
   { import = "nvchad.blink.lazyspec" },
   {
     "mason-org/mason.nvim",
-    opts = {
-      github = {
-        download_url_template = "https://ghfast.top/https://github.com/%s/releases/download/%s/%s",
-      },
-      ensure_installed = { "marksman", "markdownlint-cli2", "markdown-toc" },
-    },
+    config = function()
+      require("mason").setup({
+        github = {
+          download_url_template = "https://ghfast.top/https://github.com/%s/releases/download/%s/%s",
+        },
+        ensure_installed = { "marksman", "prettier", "markdownlint-cli2", "markdown-toc" },
+      })
+    end
   },
   {
     "neovim/nvim-lspconfig",
@@ -19,11 +21,23 @@ return {
   },
   {
     "mfussenegger/nvim-lint",
-    opts = {
-      linters_by_ft = {
+    config = function()
+      local lint = require('lint')
+      lint.linters_by_ft = {
         markdown = { "markdownlint-cli2" },
-      },
-    },
+      }
+      vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+        callback = function()
+          -- try_lint without arguments runs the linters defined in `linters_by_ft`
+          -- for the current filetype
+          require("lint").try_lint()
+
+          -- You can call `try_lint` with a linter name or a list of names to always
+          -- run specific linters, independent of the `linters_by_ft` configuration
+          -- require("lint").try_lint("cspell")
+        end,
+      })
+    end
   },
   {
     "stevearc/conform.nvim",
